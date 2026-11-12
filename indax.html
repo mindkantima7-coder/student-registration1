@@ -1,0 +1,619 @@
+
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Registration | Luxury Edition</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --gold: #d8bd83;
+    --gold-light: #f1dfb5;
+    --gold-dark: #9e8048;
+    --bg: #080b12;
+    --panel: #111722;
+    --text: #f5f2eb;
+    --muted: #9299a6;
+    --border: rgba(216,189,131,0.19);
+}
+
+body {
+    font-family: 'Prompt', sans-serif;
+    background:
+        radial-gradient(ellipse at 50% 0%, #1c2940 0%, transparent 45%),
+        var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+}
+
+/* HEADER */
+.header {
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    padding: 75px 20px 70px;
+    background: linear-gradient(135deg, #080b12, #121d2e 55%, #080b12);
+    border-bottom: 1px solid var(--border);
+}
+
+.header::before {
+    content: "";
+    position: absolute;
+    width: 480px;
+    height: 480px;
+    border: 1px solid rgba(216,189,131,0.10);
+    border-radius: 50%;
+    top: -300px;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow:
+        0 0 0 35px rgba(216,189,131,0.025),
+        0 0 0 75px rgba(216,189,131,0.02);
+}
+
+.header::after {
+    content: "";
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    background: rgba(216,189,131,0.07);
+    filter: blur(90px);
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.header-content {
+    position: relative;
+    z-index: 1;
+}
+
+.brand-mark {
+    width: 58px;
+    height: 58px;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 25px;
+    font-size: 25px;
+    transform: rotate(45deg);
+}
+
+.brand-mark span {
+    transform: rotate(-45deg);
+}
+
+.eyebrow {
+    color: var(--gold);
+    font-size: 11px;
+    letter-spacing: 5px;
+    font-weight: 500;
+    margin-bottom: 15px;
+}
+
+.header h1 {
+    font-size: clamp(28px, 5vw, 45px);
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+.header h1 span {
+    color: var(--gold);
+}
+
+.header-description {
+    color: #aab2c0;
+    font-size: 13px;
+    font-weight: 300;
+    letter-spacing: 1px;
+}
+
+.header-line {
+    width: 65px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 25px auto 0;
+}
+
+/* MAIN LAYOUT */
+.container {
+    max-width: 1500px;
+    margin: -28px auto 0;
+    padding: 0 25px 40px;
+    position: relative;
+    z-index: 2;
+
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: 25px;
+    align-items: start;
+}
+
+.card {
+    background: linear-gradient(145deg, #151e2b, #0f151f);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 28px;
+    min-width: 0;
+    box-shadow: 0 18px 50px rgba(0,0,0,0.25);
+}
+
+/* SECTION TITLE */
+.section-heading {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+
+.section-number {
+    color: var(--gold);
+    font-size: 13px;
+    letter-spacing: 2px;
+    border: 1px solid var(--border);
+    padding: 9px 12px;
+    flex-shrink: 0;
+}
+
+.section-heading h2 {
+    font-size: 19px;
+    font-weight: 500;
+}
+
+.section-heading p {
+    color: var(--muted);
+    font-size: 11px;
+    margin-top: 3px;
+}
+
+/* FORM */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    min-width: 0;
+}
+
+.form-group label {
+    color: #d9dce2;
+    font-size: 13px;
+}
+
+.form-group label span {
+    color: var(--gold);
+}
+
+.form-group input {
+    width: 100%;
+    padding: 13px 14px;
+    background: #0a1019;
+    border: 1px solid #2a3442;
+    border-radius: 9px;
+    color: white;
+    outline: none;
+    font-family: 'Prompt', sans-serif;
+    font-size: 13px;
+    transition: 0.3s;
+}
+
+.form-group input::placeholder {
+    color: #687282;
+}
+
+.form-group input:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 15px rgba(216,189,131,0.09);
+    background: #101927;
+}
+
+.full-width {
+    grid-column: 1 / -1;
+}
+
+/* BUTTON */
+.submit-btn {
+    width: 100%;
+    margin-top: 25px;
+    padding: 15px;
+    border: none;
+    border-radius: 9px;
+    background: linear-gradient(110deg, #a88a52, #ead6a6, #b4945a);
+    color: #10141b;
+    font-family: 'Prompt', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 28px rgba(216,189,131,0.25);
+}
+
+.submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+#message {
+    text-align: center;
+    font-size: 13px;
+    margin-top: 18px;
+}
+
+/* TABLE */
+.table-wrapper {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 580px;
+}
+
+thead {
+    background: #202b3a;
+}
+
+th {
+    padding: 15px 12px;
+    color: var(--gold-light);
+    font-size: 12px;
+    font-weight: 500;
+    text-align: left;
+    border-bottom: 1px solid var(--gold-dark);
+    white-space: nowrap;
+}
+
+td {
+    padding: 14px 12px;
+    color: #d4d9e1;
+    font-size: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+tbody tr {
+    transition: 0.2s;
+}
+
+tbody tr:hover {
+    background: rgba(216,189,131,0.055);
+}
+
+.empty {
+    text-align: center;
+    color: var(--muted);
+    padding: 30px;
+}
+
+/* FOOTER */
+footer {
+    text-align: center;
+    padding: 30px 15px;
+    border-top: 1px solid rgba(216,189,131,0.12);
+    color: #737d8d;
+    font-size: 11px;
+    letter-spacing: 1px;
+}
+
+footer span {
+    color: var(--gold);
+}
+
+/* RESPONSIVE */
+@media (max-width: 1000px) {
+    .container {
+        grid-template-columns: 1fr;
+        max-width: 750px;
+    }
+}
+
+@media (max-width: 650px) {
+    .header {
+        padding: 60px 15px;
+    }
+
+    .header h1 {
+        font-size: 27px;
+    }
+
+    .eyebrow {
+        letter-spacing: 3px;
+    }
+
+    .container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .full-width {
+        grid-column: auto;
+    }
+
+    .card {
+        padding: 22px 16px;
+    }
+
+    .section-heading h2 {
+        font-size: 16px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+    <div class="header-content">
+        <div class="brand-mark"><span>✦</span></div>
+
+        <p class="eyebrow">PREMIUM STUDENT PORTAL</p>
+
+        <h1>STUDENT <span>REGISTRATION</span></h1>
+
+        <p class="header-description">
+            ระบบลงทะเบียนนักศึกษา วิทยาลัยเทคนิคนางรอง
+        </p>
+
+        <div class="header-line"></div>
+    </div>
+</header>
+
+<main class="container">
+
+    <!-- REGISTRATION FORM -->
+    <section class="card">
+
+        <div class="section-heading">
+            <div class="section-number">01</div>
+            <div>
+                <h2>ลงทะเบียนนักศึกษา</h2>
+                <p>STUDENT INFORMATION</p>
+            </div>
+        </div>
+
+        <form id="registrationForm">
+
+            <div class="form-grid">
+
+                <div class="form-group">
+                    <label for="first_name">ชื่อ <span>*</span></label>
+                    <input type="text" id="first_name"
+                           placeholder="กรอกชื่อ" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="last_name">นามสกุล <span>*</span></label>
+                    <input type="text" id="last_name"
+                           placeholder="กรอกนามสกุล" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="nickname">ชื่อเล่น</label>
+                    <input type="text" id="nickname"
+                           placeholder="กรอกชื่อเล่น">
+                </div>
+
+                <div class="form-group">
+                    <label for="student_id">รหัสนักศึกษา <span>*</span></label>
+                    <input type="text" id="student_id"
+                           placeholder="กรอกรหัสนักศึกษา" required>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="major">สาขาวิชา <span>*</span></label>
+                    <input type="text" id="major"
+                           placeholder="กรอกสาขาวิชา" required>
+                </div>
+
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">
+                ✦ &nbsp; CONFIRM REGISTRATION
+            </button>
+
+            <div id="message" role="status"></div>
+
+        </form>
+    </section>
+
+    <!-- STUDENT LIST -->
+    <section class="card">
+
+        <div class="section-heading">
+            <div class="section-number">02</div>
+            <div>
+                <h2>รายชื่อนักศึกษาที่ลงทะเบียน</h2>
+                <p>REGISTERED STUDENTS</p>
+            </div>
+        </div>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>NO.</th>
+                        <th>ชื่อ - นามสกุล</th>
+                        <th>ชื่อเล่น</th>
+                        <th>รหัสนักศึกษา</th>
+                        <th>สาขาวิชา</th>
+                    </tr>
+                </thead>
+
+                <tbody id="studentTable">
+                    <tr>
+                        <td colspan="5" class="empty">
+                            กำลังโหลดข้อมูล...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </section>
+
+</main>
+
+<footer>
+    <p>DESIGNED WITH <span>✦</span> ELEGANCE</p>
+    <p style="margin-top:8px;">
+        © 2026 NANGRONG TECHNICAL COLLEGE
+    </p>
+</footer>
+
+<script>
+// SUPABASE CONFIGURATION
+const SUPABASE_URL = 'https://mxwihzxnyfjggfqkjupg.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_6KPZoj-Ego1rndLDxNm5DQ_8BRv08IM';
+
+const db = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+
+const form = document.getElementById('registrationForm');
+const message = document.getElementById('message');
+const submitBtn = document.getElementById('submitBtn');
+const studentTable = document.getElementById('studentTable');
+
+// MESSAGE
+function showMessage(text, color) {
+    message.textContent = text;
+    message.style.color = color;
+}
+
+// LOAD STUDENTS
+async function loadStudents() {
+    studentTable.innerHTML = `
+        <tr>
+            <td colspan="5" class="empty">กำลังโหลดข้อมูล...</td>
+        </tr>
+    `;
+
+    const { data, error } = await db
+        .from('registrations')
+        .select('*')
+        .order('id', { ascending: false });
+
+    if (error) {
+        console.error(error);
+        studentTable.innerHTML = `
+            <tr>
+                <td colspan="5" class="empty">
+                    ไม่สามารถโหลดข้อมูลได้
+                </td>
+            </tr>
+        `;
+        return;
+    }
+
+    if (!data || data.length === 0) {
+        studentTable.innerHTML = `
+            <tr>
+                <td colspan="5" class="empty">
+                    ยังไม่มีข้อมูลนักศึกษา
+                </td>
+            </tr>
+        `;
+        return;
+    }
+
+    studentTable.innerHTML = '';
+
+    data.forEach((student, index) => {
+        const tr = document.createElement('tr');
+
+        const values = [
+            index + 1,
+            `${student.first_name} ${student.last_name}`,
+            student.nickname || '-',
+            student.student_id,
+            student.major
+        ];
+
+        values.forEach(value => {
+            const td = document.createElement('td');
+            td.textContent = value;
+            tr.appendChild(td);
+        });
+
+        studentTable.appendChild(tr);
+    });
+}
+
+// REGISTER STUDENT
+form.addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'PROCESSING...';
+    showMessage('', '');
+
+    const student = {
+        first_name: document.getElementById('first_name').value.trim(),
+        last_name: document.getElementById('last_name').value.trim(),
+        nickname: document.getElementById('nickname').value.trim() || null,
+        student_id: document.getElementById('student_id').value.trim(),
+        major: document.getElementById('major').value.trim()
+    };
+
+    try {
+        const { error } = await db
+            .from('registrations')
+            .insert([student]);
+
+        if (error) {
+            if (error.code === '23505') {
+                showMessage('รหัสนักศึกษานี้มีในระบบแล้ว', '#ff7777');
+            } else {
+                showMessage('เกิดข้อผิดพลาด: ' + error.message, '#ff7777');
+            }
+        } else {
+            showMessage('ลงทะเบียนสำเร็จเรียบร้อยแล้ว ✦', '#d8bd83');
+            form.reset();
+            await loadStudents();
+        }
+    } catch (error) {
+        console.error(error);
+        showMessage('ไม่สามารถเชื่อมต่อระบบได้ กรุณาลองใหม่', '#ff7777');
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = '✦   CONFIRM REGISTRATION';
+    }
+});
+
+// INITIAL LOAD
+loadStudents();
+</script>
+
+</body>
+</html>
